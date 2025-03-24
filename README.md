@@ -81,7 +81,7 @@ Puedes probar la API usando:
 
 ## Autor
 
-[Tu Nombre]
+Emilio Tijerina
 
 ## Licencia
 
