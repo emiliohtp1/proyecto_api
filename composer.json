@@ -1,0 +1,13 @@
+{
+    "name": "proyecto_api",
+    "description": "API REST para gestión de usuarios, nómina, capacitación y reclutamiento",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "api/"
+        }
+    }
+}
+  

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Recursos Humanos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Gestión de Recursos Humanos</h1>
+        
+        <div class="card">
+            <h2>Usuarios</h2>
+            <button onclick="cargarDatos('usuarios')">Cargar Usuarios</button>
+            <div id="usuarios-data"></div>
+        </div>
+
+        <div class="card">
+            <h2>Nómina</h2>
+            <button onclick="cargarDatos('nomina')">Cargar Nómina</button>
+            <div id="nomina-data"></div>
+        </div>
+
+        <div class="card">
+            <h2>Capacitación</h2>
+            <button onclick="cargarDatos('capacitacion')">Cargar Capacitaciones</button>
+            <div id="capacitacion-data"></div>
+        </div>
+
+        <div class="card">
+            <h2>Reclutamiento</h2>
+            <button onclick="cargarDatos('reclutamiento')">Cargar Reclutamiento</button>
+            <div id="reclutamiento-data"></div>
+        </div>
+    </div>
+
+    <script>
+        function cargarDatos(tipo) {
+            fetch(`api/${tipo}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        const tabla = crearTabla(data);
+                        document.getElementById(`${tipo}-data`).innerHTML = tabla;
+                    } else {
+                        document.getElementById(`${tipo}-data`).innerHTML = 
+                            `<p>${data.message || 'No hay datos disponibles'}</p>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById(`${tipo}-data`).innerHTML = 
+                        `<p>Error al cargar los datos: ${error.message}</p>`;
+                });
+        }
+
+        function crearTabla(data) {
+            if (data.length === 0) return '<p>No hay datos disponibles</p>';
+
+            const headers = Object.keys(data[0]);
+            let tabla = '<table><thead><tr>';
+            
+            // Crear encabezados
+            headers.forEach(header => {
+                tabla += `<th>${header}</th>`;
+            });
+            tabla += '</tr></thead><tbody>';
+
+            // Crear filas
+            data.forEach(row => {
+                tabla += '<tr>';
+                headers.forEach(header => {
+                    tabla += `<td>${row[header]}</td>`;
+                });
+                tabla += '</tr>';
+            });
+
+            tabla += '</tbody></table>';
+            return tabla;
+        }
+    </script>
+</body>
+</html> 
